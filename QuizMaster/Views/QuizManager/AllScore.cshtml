@@ -1,0 +1,88 @@
+﻿@model IEnumerable<QuizMaster.Models.Score>
+
+@{
+    ViewData["Title"] = "AllScore";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<div class="container-fluid">
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+       
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+
+                            <th>Exam Code</th>
+                            <th>Score</th>
+                            <th>Exam Date</th>
+
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                     
+                        @if (Model.Any())
+                        {
+
+                           <span>@{ var i = 1;}</span>
+
+                            @foreach (var score in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem =>score.CandidateName)
+
+                                    </td>
+
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => score.ExamCode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => score.CandidateScore)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => score.TestDate)
+                                    </td>
+
+
+                                </tr>
+                                i++;
+
+                            }
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<a asp-action="Index" asp-controller="Home">Home</a>
+
+
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").DataTable();
+        })
+    </script>
+}

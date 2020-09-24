@@ -1,0 +1,68 @@
+﻿@model QuizMaster.Models.Question
+
+@{
+    ViewData["Title"] = "CreatQuestion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+   
+
+
+<hr />
+    <section >
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h1>Create Question</h1>
+                <form asp-action="CreatQuestion">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="SubjectId" class="control-label"></label>
+                        <select asp-for="SubjectId" class="form-control" asp-items="ViewBag.Subject"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuestText" class="control-label"></label>
+                        <textarea asp-for="QuestText" class="form-control"></textarea>
+                        <span asp-validation-for="QuestText" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OptionA" class="control-label"></label>
+                        <textarea asp-for="OptionA" class="form-control"></textarea>
+                        <span asp-validation-for="OptionA" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OptionB" class="control-label"></label>
+                        <textarea asp-for="OptionB" class="form-control"></textarea>
+                        <span asp-validation-for="OptionB" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OptionC" class="control-label"></label>
+                        <textarea asp-for="OptionC" class="form-control"></textarea>
+                        <span asp-validation-for="OptionC" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OptionD" class="control-label"></label>
+                        <textarea asp-for="OptionD" class="form-control"></textarea>
+                        <span asp-validation-for="OptionD" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CorrectAnswer" class="control-label"></label>
+                        <textarea asp-for="CorrectAnswer" class="form-control"></textarea>
+                        <span asp-validation-for="CorrectAnswer" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </section>
+
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

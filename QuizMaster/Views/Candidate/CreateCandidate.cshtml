@@ -1,0 +1,58 @@
+﻿@model QuizMaster.ViewModels.CandidateViewModel
+
+@{
+    ViewData["Title"] = "CreateCandidate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row no-gutters">
+    <div class="col-md-7">
+        <div class="contact-wrap w-100 p-md-5 p-4">
+            <h3 class="mb-4">Candidate Registration Form</h3>
+            <form asp-action="CreateCandidate">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label" asp-for="Name">Full Name</label>
+                            <input class="form-control" asp-for="Name" placeholder="Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label" asp-for="Email">Email</label>
+                            <input asp-for="Email" class="form-control" placeholder="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label" asp-for="Phone">Phone number</label>
+                            <input asp-for="Phone" class="form-control" placeholder="Phone number" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="submit" value="Register" class="btn btn-primary">
+                            <div class="submitting"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-5 order-md-first d-flex align-items-stretch">
+        <div id="map" class="map"></div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

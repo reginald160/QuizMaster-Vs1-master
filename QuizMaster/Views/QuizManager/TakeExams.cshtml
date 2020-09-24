@@ -1,0 +1,98 @@
+﻿@model QuizMaster.ViewModels.ExaminationViewModel
+
+@{
+    ViewData["Title"] = "TakeExam";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Quiz</h1>
+
+
+<label>Test progress:</label>
+<meter id="file" value="@ViewBag.count" max="@ViewBag.Value"> 32% </meter>
+<div>
+    <p><b>Question Number:</b></p>
+
+    <p><b>Time Remaining:</b><span id="minRemaining"></span>:<span id="secRemaining"></span></p>
+
+</div>
+<hr />
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="TakeExams" enctype="multipart/form-data">
+
+            @foreach (var item in ViewBag.Question)
+            {
+
+                <section class="border py-3">
+                    <!-- Default checked -->
+                    <input asp-for="Answer" value="@item.CorrectAnswer" hidden="hidden" />
+                    <input asp-for="QuestionId" value="@item.Id" hidden="hidden" />
+                    <div class="text-center">
+                        <p>  @item.QuestText</p>
+                    </div>
+                    <input asp-for="Option" value="@item.CorrectAnswer" hidden="hidden" />
+                    <div class="form-check">
+                        <input type="radio" asp-for="Answer" class="form-check-input with-gap" id="@item.Id" name="Answer" value="1" />
+                        <label class="form-check-label" for="radioGap1"> @item.OptionA</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" asp-for="Answer" class="form-check-input with-gap" id="@item.Id" name="Answer" value="2" />
+                        <label class="form-check-label" for="radioGap1"> @item.OptionB</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="radio" asp-for="Answer" class="form-check-input with-gap" id="@item.Id" name="Answer" value="3" />
+                        <label class="form-check-label" for="radioGap1"> @item.OptionC</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" asp-for="Answer" class="form-check-input with-gap" id="@item.Id" name="Answer" value="4" />
+                        <label class="form-check-label" for="radioGap1"> @item.OptionD</label>
+
+                    </div>
+
+                </section>
+            }
+            <p>
+                <div class="">
+                    <input type="submit" value="Next" class="btn btn-primary" />
+                </div>
+            </p>
+
+        </form>
+    </div>
+</div>
+<a class="btn btn-primary" id="btn" asp-action="TakeExams" asp-controller="QuizManager" hidden="hidden"></a>
+
+@{
+    var endTime = DateTime.UtcNow.AddSeconds(30);
+    var timeRemaining = Math.Floor(TimeSpan.FromTicks(endTime.Ticks - DateTime.UtcNow.Ticks).TotalSeconds);
+}
+<script>
+    var remSeconds = @timeRemaining;
+    function startTick() {
+        document.getElementById('secRemaining').innerHTML = remSeconds;
+        var tick = setInterval(function () {
+            remSeconds = remSeconds - 1;
+            document.getElementById('secRemaining').innerHTML = remSeconds;
+            if (remSeconds == 0) {
+
+                 timeOut();
+
+            }
+        }, 1000);
+    };
+    function timeOut() {
+
+        document.getElementById('btn').click();
+
+
+    }
+    startTick();
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

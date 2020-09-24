@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "Instruction";
+
+}
+  
+    
+       
+           
+    <form asp-action="Instruction" asp-controller="QuizManager">
+        <section class="hero-wrap hero-wrap-2" style="background-image: url('../images/bg_5.jpg');" data-stellar-background-ratio="0.5">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row no-gutters slider-text align-items-center justify-content-center">
+                    <div class="col-md-9 ftco-animate mb-0 text-center">
+                        
+
+                        <h1 class="mb-0 bread">Instruction</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <p><h5>Dear @ViewBag.Email,</h5></p>
+                        <div class="heading-section text-center ftco-animate pb-4">
+                            <span class="subheading">You are Welcome to Learning Hub Online Quiz.</span>
+                            
+                        </div>
+                        <p>This quiz consists of 10 multiple-choice questions. To be successful with the weekly quizzes, it’s important to thoroughly read chapter 5 in the textbook.  It will also be extremely useful to study the key terms at the end of the chapter and review the Test Your Knowledge activity at the end of the chapter. Keep the following in mind</p>
+                        @*<blockquote class="blockquote my-5">
+                            <span class="fa fa-quote-left"></span>
+                            <h3> Chalange your brain</h3>
+                        </blockquote>*@
+                        <ul>
+                            <li>
+                                <b>Multiple Attempts</b>  - You will have three attempts for this quiz with your highest score being recorded in the grade book.
+                            </li>
+                            <li>
+                                <b>Timing</b>   - You will need to complete each of your attempts in one sitting, as you are allotted 30 minutes to complete each attempt.
+                            </li>
+                            <li>
+                                <b>Answers </b>   - You may review your answer-choices and compare them to the correct answers after your final attempt.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <p>To start click the "Take Quiz" button to start the Quiz</p>
+        <div>
+            <input type="submit" value="Take Quiz" class="btn btn-primary" width="40" />
+          
+        </div>
+
+    </form>

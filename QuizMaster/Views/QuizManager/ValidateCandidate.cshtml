@@ -1,0 +1,63 @@
+﻿@model QuizMaster.ViewModels.CandidateValidationViewModel
+
+@{
+    ViewData["Title"] = "ValidateCandidate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<section class="hero-wrap hero-wrap-2" style="background-image: url('../images/bg_5.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate mb-0 text-center">
+                <div class="">
+                    <h3 class="mb-0 bread">Candidate Validation</h3>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-4">
+
+                            <form asp-action="ValidateCandidate">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="label" asp-for="Email">Email</label>
+                                            <input asp-for="Email" class="form-control" placeholder="Email">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="label" asp-for="ExamCode">Quiz Number</label>
+                                            <input asp-for="ExamCode" class="form-control" placeholder="Quiz number" />
+                                            <span asp-validation-for="ExamCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Validate" class="btn btn-primary">
+                                            <div class="submitting"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="col-md-5 order-md-first d-flex align-items-stretch">
+                        <div id="map" class="map"></div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
