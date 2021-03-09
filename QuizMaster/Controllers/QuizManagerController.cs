@@ -227,8 +227,12 @@ namespace QuizMaster.Controllers
         public async Task<IActionResult> AllScore()
         {
             var scores = await _context.Scores.ToListAsync();
-            return View(scores);
-
+            if(scores != null)
+            {
+                return View(scores);
+            }
+            TempData["NullScore"] = "There is no score available";
+            return View("Index", "Home");
         }
 
         [HttpGet]

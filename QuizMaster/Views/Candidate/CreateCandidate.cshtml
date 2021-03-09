@@ -9,6 +9,7 @@
     <div class="col-md-7">
         <div class="contact-wrap w-100 p-md-5 p-4">
             <h3 class="mb-4">Candidate Registration Form</h3>
+            <span class="text-danger">@ViewBag.Message</span>
             <form asp-action="CreateCandidate">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
