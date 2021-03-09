@@ -27,7 +27,15 @@ namespace QuizMaster.Controllers
         public async Task<ActionResult> AllCandidates()
         {
             var candidate = await _context.Candidates.ToListAsync();
-            return View(candidate);
+            if(candidate != null)
+            {
+                return View(candidate);
+            }
+            else
+            {
+                TempData["NullScore"] = "There is no registered candidate yet";
+                return View("Index", "Home");
+            }
         }
 
         // GET: Candidate/Details/5
