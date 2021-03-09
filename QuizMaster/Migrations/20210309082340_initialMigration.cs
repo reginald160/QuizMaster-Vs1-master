@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QuizMaster.Migrations
 {
-    public partial class init : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,7 +47,7 @@ namespace QuizMaster.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Candidates",
+                name: "Candidate",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -60,7 +60,7 @@ namespace QuizMaster.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Candidates", x => x.Id);
+                    table.PrimaryKey("PK_Candidate", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +74,22 @@ namespace QuizMaster.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Examiner", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Scores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExamCode = table.Column<string>(nullable: true),
+                    TestDate = table.Column<DateTime>(nullable: false),
+                    CandidateScore = table.Column<int>(nullable: false),
+                    CandidateName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Scores", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,6 +246,7 @@ namespace QuizMaster.Migrations
                     CandidateId = table.Column<int>(nullable: false),
                     QuestionId = table.Column<int>(nullable: false),
                     ExamCode = table.Column<string>(nullable: true),
+                    ScoreId = table.Column<int>(nullable: true),
                     Answer = table.Column<int>(nullable: false),
                     Option = table.Column<int>(nullable: false),
                     ExaminationId = table.Column<int>(nullable: true)
@@ -238,9 +255,9 @@ namespace QuizMaster.Migrations
                 {
                     table.PrimaryKey("PK_Examinations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Examinations_Candidates_CandidateId",
+                        name: "FK_Examinations_Candidate_CandidateId",
                         column: x => x.CandidateId,
-                        principalTable: "Candidates",
+                        principalTable: "Candidate",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -255,28 +272,12 @@ namespace QuizMaster.Migrations
                         principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Scores",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegistrationNumber = table.Column<int>(nullable: false),
-                    StudentScore = table.Column<int>(nullable: false),
-                    StudentName = table.Column<string>(nullable: true),
-                    ExaminationId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Scores", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Scores_Examinations_ExaminationId",
-                        column: x => x.ExaminationId,
-                        principalTable: "Examinations",
+                        name: "FK_Examinations_Scores_ScoreId",
+                        column: x => x.ScoreId,
+                        principalTable: "Scores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -334,15 +335,14 @@ namespace QuizMaster.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Examinations_ScoreId",
+                table: "Examinations",
+                column: "ScoreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Questions_SubjectId",
                 table: "Questions",
                 column: "SubjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Scores_ExaminationId",
-                table: "Scores",
-                column: "ExaminationId",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -363,7 +363,7 @@ namespace QuizMaster.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Scores");
+                name: "Examinations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -372,16 +372,16 @@ namespace QuizMaster.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Examinations");
-
-            migrationBuilder.DropTable(
-                name: "Candidates");
+                name: "Candidate");
 
             migrationBuilder.DropTable(
                 name: "Examiner");
 
             migrationBuilder.DropTable(
                 name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "Scores");
 
             migrationBuilder.DropTable(
                 name: "Subjects");

@@ -227,18 +227,15 @@ namespace QuizMaster.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExamCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -346,6 +343,32 @@ namespace QuizMaster.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Questions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CorrectAnswer = 1,
+                            OptionA = "5",
+                            OptionB = "2",
+                            OptionC = "5",
+                            OptionD = "7",
+                            QuestText = "What is the sum of 2 and 3",
+                            QuestionNumber = 1,
+                            SubjectId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CorrectAnswer = 2,
+                            OptionA = "5",
+                            OptionB = "6",
+                            OptionC = "5",
+                            OptionD = "7",
+                            QuestText = "What is the product of 2 and 3",
+                            QuestionNumber = 1,
+                            SubjectId = 2
+                        });
                 });
 
             modelBuilder.Entity("QuizMaster.Models.Score", b =>
@@ -385,6 +408,18 @@ namespace QuizMaster.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "English"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mathematics"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

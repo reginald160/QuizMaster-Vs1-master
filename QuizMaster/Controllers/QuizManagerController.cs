@@ -23,13 +23,13 @@ namespace QuizMaster.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult ErrorPage( string message)
+        public IActionResult ErrorPage(string message)
         {
             if (!string.IsNullOrEmpty(message))
                 TempData["ErrorMessage"] = message;
             return View();
-           
-            
+
+
         }
 
         [HttpGet]
@@ -53,7 +53,7 @@ namespace QuizMaster.Controllers
                     {
                         return RedirectToAction(nameof(Instruction));
                     }
-                   
+
                 }
                 ViewBag.ErrorMessage = "Your Details are not found";
                 //return NotFound("Your Details are not found");
@@ -65,14 +65,14 @@ namespace QuizMaster.Controllers
         public IActionResult Instruction()
         {
             ViewBag.QuestionCount = _context.Questions.Count();
-            ViewBag.Email = HttpContext.Session.GetString("sessionEmail");
+            ViewBag.Name = HttpContext.Session.GetString("sessionName");
             return View();
         }
         [HttpPost]
         public IActionResult Instruction(string name)
         {
             var examCode = HttpContext.Session.GetString("sessionExamCode");
-            var examStatus =  _context.Examinations.Where(x => x.ExamCode.Contains(examCode)).FirstOrDefault();
+            var examStatus = _context.Examinations.Where(x => x.ExamCode.Contains(examCode)).FirstOrDefault();
             if (examStatus == null)
             {
                 return RedirectToAction(nameof(TakeExam));
@@ -89,7 +89,7 @@ namespace QuizMaster.Controllers
         public async Task<IActionResult> CreatSubject(Subject model)
         {
             var IsExist = _context.Subjects.Where(x => x.Name == model.Name).FirstOrDefault();
-            if (IsExist ==null)
+            if (IsExist == null)
             {
                 _unitOfWork.AddSubject(model);
                 await _unitOfWork.Save();
@@ -104,7 +104,7 @@ namespace QuizMaster.Controllers
         }
         public IActionResult CreatQuestion()
         {
-          ViewBag.Subject =  _unitOfWork.GetSubjects();
+            ViewBag.Subject = _unitOfWork.GetSubjects();
             return View();
         }
         [HttpPost]
@@ -134,7 +134,7 @@ namespace QuizMaster.Controllers
             var questionCount = _context.Questions.Count();
             var id = examcount + 1;
             ViewBag.Question = _context.Questions.Where(x => x.QuestionNumber == id).ToList();
-            ViewBag.count =id;
+            ViewBag.count = id;
             ViewBag.Value = _context.Questions.Count();
             ViewBag.Max = _context.Examinations.Count();
             ViewBag.ExamCount = id;
@@ -143,9 +143,9 @@ namespace QuizMaster.Controllers
 
             if (HttpContext.Session.GetString("sessionEmail") != null)
             {
-                
-                if (examcount != questionCount )
-                { 
+
+                if (examcount != questionCount)
+                {
                     return View();
                 }
                 else
@@ -154,17 +154,17 @@ namespace QuizMaster.Controllers
                 }
             }
             return RedirectToAction("ErrorPage", new { message = "Section has Expired" });
-            
+
         }
 
-        [HttpPost]  
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TakeExam(ExaminationViewModel Vmodel)
         {
             if (ModelState.IsValid)
-            { 
+            {
                 var examcount = _context.Examinations.Count();
-            var questionCount = _context.Questions.Count();
+                var questionCount = _context.Questions.Count();
                 var model = new Examination
                 {
                     Option = Vmodel.Option,
@@ -172,7 +172,7 @@ namespace QuizMaster.Controllers
                     QuestionId = Vmodel.QuestionId,
                     CandidateId = (int)HttpContext.Session.GetInt32("sessionId"),
                     ExamCode = HttpContext.Session.GetString("sessionExamCode"),
-            };
+                };
                 await _context.Examinations.AddAsync(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(TakeExam));
@@ -181,17 +181,17 @@ namespace QuizMaster.Controllers
             return RedirectToAction("ErrorPage", new { message = "Error has Occured" });
 
         }
-                     
-    
-        public async Task <IActionResult> CalculateScores()
-        {      
-           
+
+
+        public async Task<IActionResult> CalculateScores()
+        {
+
             var examCode = HttpContext.Session.GetString("sessionExamCode");
             var candidateName = HttpContext.Session.GetString("sessionName");
             var pass = _context.Examinations.Where(x => x.Answer == x.Option && x.ExamCode == examCode).Count();
             var fail = _context.Examinations.Where(x => x.Answer != x.Option && x.ExamCode == examCode).Count();
             var Total = _context.Examinations.Where(x => x.ExamCode == examCode).Count();
-            var percentageScore = (Total * pass);
+            var percentageScore = (pass / Total) / 100;
             ViewBag.Pass = pass;
             ViewBag.Fail = fail;
             ViewBag.Total = Total;
@@ -222,30 +222,30 @@ namespace QuizMaster.Controllers
             else
             {
                 return RedirectToAction("ErrorPage", new { message = "Invalid Query" });
-            }                       
+            }
         }
-        public async  Task <IActionResult> AllScore()
+        public async Task<IActionResult> AllScore()
         {
             var scores = await _context.Scores.ToListAsync();
             return View(scores);
-           
+
         }
 
         [HttpGet]
-        public  IActionResult GetScore()
+        public IActionResult GetScore()
         {
-            
+
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> GetScore(Score score)
         {
-          await  _context.Scores.Where(x => x.ExamCode == score.ExamCode).FirstOrDefaultAsync();
+            await _context.Scores.Where(x => x.ExamCode == score.ExamCode).FirstOrDefaultAsync();
             var scores = await _context.Scores.ToListAsync();
             return View(scores);
         }
 
-       
+
         [HttpGet]
         public IActionResult TakeExams()
         {

@@ -10,8 +10,8 @@ using QuizMaster.Data;
 namespace QuizMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200921141335_init2")]
-    partial class init2
+    [Migration("20210309082340_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -245,7 +245,7 @@ namespace QuizMaster.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Candidates");
+                    b.ToTable("Candidate");
                 });
 
             modelBuilder.Entity("QuizMaster.Models.Examination", b =>
@@ -273,6 +273,9 @@ namespace QuizMaster.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ScoreId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
@@ -280,6 +283,8 @@ namespace QuizMaster.Migrations
                     b.HasIndex("ExaminationId");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("ScoreId");
 
                     b.ToTable("Examinations");
                 });
@@ -349,22 +354,19 @@ namespace QuizMaster.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ExaminationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RegistrationNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentName")
+                    b.Property<string>("CandidateName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentScore")
+                    b.Property<int>("CandidateScore")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ExamCode")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ExaminationId")
-                        .IsUnique();
+                    b.Property<DateTime>("TestDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Scores");
                 });
@@ -452,6 +454,10 @@ namespace QuizMaster.Migrations
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("QuizMaster.Models.Score", "Score")
+                        .WithMany()
+                        .HasForeignKey("ScoreId");
                 });
 
             modelBuilder.Entity("QuizMaster.Models.Question", b =>
@@ -459,15 +465,6 @@ namespace QuizMaster.Migrations
                     b.HasOne("QuizMaster.Models.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("QuizMaster.Models.Score", b =>
-                {
-                    b.HasOne("QuizMaster.Models.Examination", "Examination")
-                        .WithOne("Score")
-                        .HasForeignKey("QuizMaster.Models.Score", "ExaminationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

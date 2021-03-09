@@ -5,10 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<body>
+
 
     <section>
         <p>Thank You for Thaking the Exam</p>
         <p>You Took To of @ViewBag.Total Question</p>
-        <p>You got @ViewBag.Score questions correctly out of @ViewBag.Fail questions</p>
-        <h1>Percentage score is @ViewBag.PercentageScore %</h1>
+        <p>You got @ViewBag.Score questions correctly out of  @ViewBag.Total questions</p>
+        <h1>You score is @ViewBag.Pass / @ViewBag.Total</h1>
     </section>
+
+
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

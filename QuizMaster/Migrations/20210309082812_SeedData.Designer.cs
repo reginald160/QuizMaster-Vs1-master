@@ -10,8 +10,8 @@ using QuizMaster.Data;
 namespace QuizMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200921141646_init3")]
-    partial class init3
+    [Migration("20210309082812_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -273,6 +273,9 @@ namespace QuizMaster.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ScoreId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
@@ -280,6 +283,8 @@ namespace QuizMaster.Migrations
                     b.HasIndex("ExaminationId");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("ScoreId");
 
                     b.ToTable("Examinations");
                 });
@@ -340,6 +345,32 @@ namespace QuizMaster.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Questions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CorrectAnswer = 1,
+                            OptionA = "5",
+                            OptionB = "2",
+                            OptionC = "5",
+                            OptionD = "7",
+                            QuestText = "What is the sum of 2 and 3",
+                            QuestionNumber = 1,
+                            SubjectId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CorrectAnswer = 2,
+                            OptionA = "5",
+                            OptionB = "6",
+                            OptionC = "5",
+                            OptionD = "7",
+                            QuestText = "What is the product of 2 and 3",
+                            QuestionNumber = 1,
+                            SubjectId = 2
+                        });
                 });
 
             modelBuilder.Entity("QuizMaster.Models.Score", b =>
@@ -349,22 +380,19 @@ namespace QuizMaster.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ExaminationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RegistrationNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentName")
+                    b.Property<string>("CandidateName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentScore")
+                    b.Property<int>("CandidateScore")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ExamCode")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ExaminationId")
-                        .IsUnique();
+                    b.Property<DateTime>("TestDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Scores");
                 });
@@ -382,6 +410,18 @@ namespace QuizMaster.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "English"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mathematics"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -452,6 +492,10 @@ namespace QuizMaster.Migrations
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("QuizMaster.Models.Score", "Score")
+                        .WithMany()
+                        .HasForeignKey("ScoreId");
                 });
 
             modelBuilder.Entity("QuizMaster.Models.Question", b =>
@@ -459,15 +503,6 @@ namespace QuizMaster.Migrations
                     b.HasOne("QuizMaster.Models.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("QuizMaster.Models.Score", b =>
-                {
-                    b.HasOne("QuizMaster.Models.Examination", "Examination")
-                        .WithOne("Score")
-                        .HasForeignKey("QuizMaster.Models.Score", "ExaminationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

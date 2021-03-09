@@ -14,6 +14,12 @@ namespace QuizMaster.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.seed();
+            base.OnModelCreating(builder);
+        }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Examination> Examinations{ get; set; }

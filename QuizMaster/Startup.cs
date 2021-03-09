@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using QuizMaster.Models;
 using QuizMaster.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace QuizMaster
 {
@@ -38,6 +39,7 @@ namespace QuizMaster
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
